@@ -1,3 +1,6 @@
+[![MCP Server Build](https://github.com/rameshsunkara/go-mcp-example/actions/workflows/cibuild.yml/badge.svg)](https://github.com/rameshsunkara/go-mcp-example/actions/workflows/cibuild.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/rameshsunkara/go-mcp-example)](https://goreportcard.com/report/github.com/rameshsunkara/go-mcp-example)
+
 # Go MCP Server Example
 
 A robust Model Context Protocol (MCP) server implementation in Go, featuring analytics reporting tools with idiomatic Go architecture, comprehensive error handling, and enterprise-grade configurability.
@@ -37,42 +40,23 @@ This project demonstrates a well-structured MCP server that provides analytics r
 ```text
 go-mcp-example/
 ├── main.go                        # Entry point and MCP server setup
-├── config/
-│   └── config.go                  # Configuration management with validation
-├── log/
-│   └── logger.go                  # Structured logging with slog
-├── models/
-│   ├── types.go                   # Core data types and validation
-│   ├── reports.go                 # Report-specific models
-│   └── client.go                  # API client models
-├── tools/
-│   ├── api_client.go              # HTTP client with dependency injection
-│   ├── reports_tools.go           # Analytics report fetching tool
-│   └── descriptions.go            # Tool descriptions and documentation
-├── prompts/
-│   └── report_prompts.go          # Interactive prompts for analytics
-├── resources/
-│   └── example_resource.go        # MCP resources
-├── docs/
-│   ├── claude-desktop/            # Claude Desktop configuration and setup
-│   │   ├── claude-desktop-config.json       # Production configuration
-│   │   ├── claude-desktop-config-dev.json   # Development configuration
-│   │   └── README.md                        # Claude Desktop setup guide
-│   ├── vscode/                    # VS Code configuration and setup
-│   │   ├── mcp.json              # MCP server configuration
-│   │   ├── settings.json         # VS Code workspace settings
-│   │   └── README.md             # VS Code setup guide
-│   └── README.md                 # Documentation index
-├── .vscode/
-│   ├── mcp.json                   # VS Code MCP configuration
-│   └── settings.json              # VS Code project settings
-├── .env.example                   # Environment variables template
-├── .gitignore                     # Git ignore patterns
+├── config/                        # Configuration management
+├── models/                        # Data types and API models
+├── tools/                         # MCP tools implementation
+├── prompts/                       # Interactive prompts
+├── resources/                     # MCP resources
+├── docs/                          # Documentation and setup guides
+│   ├── claude-desktop/            # Claude Desktop configuration
+│   └── vscode/                    # VS Code configuration
+├── .vscode/                       # VS Code project settings
+├── .env.example                   # Environment template
+├── Dockerfile                     # Container configuration
+├── Makefile                       # Development commands
 ├── openapi.yaml                   # API specification
-├── Dockerfile                     # Multi-stage Docker build
-├── Makefile                       # Development automation
-└── .env                          # Environment configuration
+└── ...                           # Other config files
 ```
+
+*See [docs/README.md](docs/README.md) for complete structure details.*
 
 ## Architecture Flow
 
@@ -146,68 +130,26 @@ The MCP server handles three types of operations:
    # OR: go run main.go --http localhost:8080
    ```
 
-4. **Test with VS Code**:
-   - Install the MCP extension in VS Code
-   - The server will be auto-configured via `.vscode/mcp.json`
-   - See the [VS Code MCP Configuration](#vs-code-mcp-configuration) section below for details
+## Client Integration
 
-### VS Code MCP Configuration
+This project includes pre-configured setups for both VS Code and Claude Desktop. Choose your preferred client:
 
-This project includes a pre-configured VS Code setup in the `docs/vscode/` directory that automatically sets up the MCP server in VS Code.
-
-For detailed setup instructions, see the [VS Code Setup Guide](docs/vscode/README.md).
-
-#### Quick Setup
+### VS Code Setup
 
 1. **Build the executable**: `make build`
-2. **Copy VS Code configurations**:
+2. **Copy configurations**: `cp docs/vscode/* .vscode/`
+3. **Install MCP Extension**: Install the official MCP extension for VS Code
 
-   ```bash
-   cp docs/vscode/mcp.json .vscode/
-   cp docs/vscode/settings.json .vscode/
-   ```
+For detailed instructions, see the [VS Code Setup Guide](docs/vscode/README.md).
 
-3. **Install VS Code MCP Extension**: Install the official MCP extension for VS Code
-4. **Configure API Key**: When VS Code loads, it will prompt you to enter your configuration
+### Claude Desktop Setup
 
-#### Available Configurations
+1. **Build the binary**: `make build`
+2. **Copy configuration**: Copy `docs/claude-desktop/claude-desktop-config.json` to your Claude Desktop config directory
+3. **Update paths and API_KEY** in the configuration file
+4. **Restart Claude Desktop**
 
-- **stdio mode**: Default mode using standard input/output
-- **HTTP mode**: Debug mode using HTTP transport on localhost:8080
-
-#### VS Code Configuration Files
-
-- **[docs/vscode/mcp.json](docs/vscode/mcp.json)**: MCP server configuration with input prompts
-- **[docs/vscode/settings.json](docs/vscode/settings.json)**: VS Code workspace settings optimized for Go development
-- Add additional server instances
-
-### Claude Desktop Configuration
-
-This project includes pre-configured Claude Desktop configuration files in the `docs/claude-desktop/` directory for easy integration with Claude Desktop.
-
-#### Configuration Files
-
-Two configuration files are provided:
-
-1. **`docs/claude-desktop/claude-desktop-config.json`** - Production configuration using the compiled binary
-2. **`docs/claude-desktop/claude-desktop-config-dev.json`** - Development configuration using `go run`
-
-#### Claude Desktop Quick Setup
-
-For detailed setup instructions, see the [Claude Desktop Setup Guide](docs/claude-desktop/README.md).
-
-**Production Setup:**
-
-1. Build the binary: `make build`
-2. Copy `docs/claude-desktop/claude-desktop-config.json` to your Claude Desktop config directory
-3. Update the `command` path and `API_KEY` in the configuration
-4. Restart Claude Desktop
-
-**Development Setup:**
-
-1. Copy `docs/claude-desktop/claude-desktop-config-dev.json` to your Claude Desktop config directory  
-2. Update the `cwd` path and `API_KEY` in the configuration
-3. Restart Claude Desktop
+For detailed instructions, see the [Claude Desktop Setup Guide](docs/claude-desktop/README.md).
 
 ### Configuration
 
@@ -230,68 +172,35 @@ HTTP_ADDR=localhost:8080          # Enable HTTP transport for debugging
 
 #### get_report - Analytics Report Fetching
 
-The `get_report` tool provides comprehensive access to the [Digital Analytics Program (DAP) API](https://open.gsa.gov/api/dap/#reports), allowing you to fetch various analytics reports for U.S. federal government websites.
+Fetches analytics reports from the [Digital Analytics Program (DAP) API](https://open.gsa.gov/api/dap/#reports) for U.S. federal government websites.
 
 **Parameters:**
 
 - `report_name` (required): The type of report to fetch
-- `limit` (optional): Maximum number of records (1-10000, default 1000)
+- `limit` (optional): Maximum records (1-10000, default 1000)
 - `page` (optional): Page number for pagination (default 1)
-- `after` (optional): Start date filter (YYYY-MM-DD format)
-- `before` (optional): End date filter (YYYY-MM-DD format)
+- `after`/`before` (optional): Date filters (YYYY-MM-DD format)
 
-**Available Report Types:**
+**Common Report Types:**
 
-| Report Type | Description | Key Metrics |
-|-------------|-------------|-------------|
-| `devices` | Device usage statistics | Desktop, mobile, tablet breakdowns |
-| `browsers` | Browser usage data | Chrome, Safari, Firefox, Edge usage |
-| `operating-systems` | OS statistics | Windows, macOS, iOS, Android, Linux |
-| `languages` | Language preferences | Visitor language settings |
-| `countries` | Geographic data by country | Traffic by country |
-| `cities` | Geographic data by city | Traffic by major cities |
-| `traffic` | Traffic volume trends | Visits, users, pageviews over time |
-| `top-pages` | Most visited pages | Page paths and their metrics |
-| `downloads` | File download stats | Popular downloads and metrics |
-| `realtime` | Real-time active users | Current active visitor count |
-| `traffic-sources` | Traffic source analysis | Direct, referral, search, social |
-| `domains` | Multi-domain analytics | Per-domain statistics |
-| `agencies` | Agency-level analytics | Government agency breakdowns |
+| Report Type | Description |
+|-------------|-------------|
+| `traffic` | Traffic volume and trends over time |
+| `top-pages` | Most visited pages and metrics |
+| `devices` | Device usage (desktop, mobile, tablet) |
+| `browsers` | Browser usage statistics |
+| `countries` | Geographic breakdown by country |
+| `realtime` | Real-time active users |
 
-**Usage Examples:**
+*See tool description for all 12+ available report types.*
+
+**Example Usage:**
 
 ```bash
-# Get device statistics
-get_report("devices")
-
-# Get top 50 pages
-get_report("top-pages", limit=50)
-
-# Get browser data for January 2024
-get_report("browsers", after="2024-01-01", before="2024-01-31")
-
-# Get traffic sources with pagination
-get_report("traffic-sources", page=2, limit=100)
-
-# Get real-time active users
-get_report("realtime")
+get_report("traffic")                                    # Basic usage
+get_report("top-pages", limit=50)                      # With limit
+get_report("browsers", after="2024-01-01", before="2024-01-31")  # Date range
 ```
-
-**Response Data:**
-
-The tool returns structured JSON data with fields varying by report type:
-
-- **Common fields**: `id`, `report_name`, `report_agency`, `date`
-- **Metrics**: `visits`, `users`, `pageviews`, `bounce_rate`
-- **Categorical**: `device`, `browser`, `os`, `country`, `page`
-- **Behavioral**: `avg_session_duration`, `pageviews_per_session`
-
-**Error Handling:**
-
-- Invalid report names are validated and return descriptive errors
-- Date format validation ensures YYYY-MM-DD format
-- API authentication and rate limiting are handled gracefully
-- Network timeouts and connectivity issues are reported clearly
 
 ## Troubleshooting
 
@@ -334,6 +243,7 @@ make lint                          # Run the linter
 make lint-fix                      # Run the linter and fix issues
 make format                        # Format Go code
 make tidy                          # Tidy Go modules
+make ci-local                      # Run full CI pipeline locally
 
 # Docker
 make docker-build                  # Build Docker image
