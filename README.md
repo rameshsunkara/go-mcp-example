@@ -56,8 +56,6 @@ go-mcp-example/
 └── ...                           # Other config files
 ```
 
-*See [docs/README.md](docs/README.md) for complete structure details.*
-
 ## Architecture Flow
 
 ```mermaid
@@ -272,11 +270,8 @@ make docker-run
 ## Roadmap
 
 - **Enhanced Analytics**: Add support for more analytics endpoints and data sources
-- **Caching Layer**: Implement intelligent caching for improved performance
 - **Authentication**: Add support for multiple authentication mechanisms
 - **Testing**: Comprehensive unit and integration test coverage
-- **Monitoring**: Add health checks and metrics collection
-- **Documentation**: Auto-generated API documentation from OpenAPI specs
 
 ## Contributing
 
@@ -286,7 +281,7 @@ make docker-run
 
 ### What This Is
 
-- A production-ready MCP server template with analytics capabilities
+- A production-ready MCP server template
 - A showcase of modern Go development practices and patterns
 - A foundation for building custom MCP tools and integrations
 - A reference implementation for MCP protocol handling in Go
