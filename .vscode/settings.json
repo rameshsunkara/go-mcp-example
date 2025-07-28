@@ -1,0 +1,9 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "cSpell.words": [
+        "modelcontextprotocol",
+        "rameshsunkara",
+        "Streamable"
+    ],
+    "makefile.configureOnOpen": false
+}

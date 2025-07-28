@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "go-mcp-example": {
+      "command": "/path/to/your/go-mcp-example/go-mcp-example",
+      "env": {
+        "API_BASE_URL": "https://api.gsa.gov/analytics/dap/v2",
+        "API_KEY": "your-secret-api-key-here",
+        "LOG_LEVEL": "info",
+        "LOG_FORMAT": "json"
+      }
+    }
+  }
+}

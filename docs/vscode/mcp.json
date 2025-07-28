@@ -1,0 +1,55 @@
+{
+        "inputs": [
+        {
+            "type": "promptString",
+            "id": "us-data-gov-api-key",
+            "description": "US Data Gov API Key",
+            "password": true
+        },
+        {
+            "type": "promptString",
+            "id": "us-data-gov-base-url",
+            "description": "US Data Gov Base URL",
+            "default": "https://api.gsa.gov/analytics/dap/v2",
+            "password": false
+        },
+        {
+            "type": "promptString",
+            "id": "log_level",
+            "description": "MCP server LOG LEVEL",
+            "default": "INFO",
+            "password": false
+        },
+        {
+            "type": "promptString",
+            "id": "log_format",
+            "description": "MCP server LOG FORMAT",
+            "default": "text",
+            "password": false
+        },
+        {
+            "type": "promptString",
+            "id": "http_port",
+            "description": "HTTP server port",
+            "default": "8080",
+            "password": false
+        }
+    ],
+    "servers": {
+        "go-mcp-example-stdio": {
+            "type": "stdio",
+            "command": "<your-path>/go-mcp-example/go-mcp-example",
+            "args": [],
+            "env": {
+                "LOG_LEVEL": "${input:log_level}",
+                "LOG_FORMAT": "${input:log_format}",
+                "API_KEY": "${input:us-data-gov-api-key}",
+                "BASE_URL": "${input:us-data-gov-base-url}"
+            }
+        },
+        "go-mcp-example-http": {
+            "type": "sse",
+            "url": "http://localhost:{http_port}/sse"
+        }
+    }
+}
